@@ -16,16 +16,18 @@ function main() {
     })
 
     renderer.setSize(w,h)
-    renderer.setClearColor(0x000000)
+    renderer.setClearColor(0xFFFFFF)
 
     document.body.appendChild(renderer.domElement)
 }
 
 function bola() {
     var bolaSphereGeometry = new THREE.SphereGeometry(2, 64, 16)
+    var textureLoader = new THREE.TextureLoader()
+    var texturebola = textureLoader.load('./asset/bola.jpg')
     var bolaMaterial = new THREE.MeshBasicMaterial( { 
-        color: 0xffff00,
-        wireframe:true
+        side: THREE.DoubleSide,
+        map: texturebola
     } )
     bolaMesh = new THREE.Mesh(bolaSphereGeometry, bolaMaterial)
     bolaMesh.position.set(0,-8, -20)
@@ -37,7 +39,7 @@ function lantai() {
     var lantaiPlane = new THREE.PlaneGeometry(18,1000)
     var lantaiMaterial = new THREE.MeshBasicMaterial({
         side: THREE.DoubleSide,
-        color: 0xf00000
+        color: '#5a3b00'
     })
     lantaiMesh = new THREE.Mesh(lantaiPlane,lantaiMaterial)
     lantaiMesh.position.set(0, -10, 0)
@@ -47,8 +49,11 @@ function lantai() {
 
 function box(x, y, z) {
     var boxBox = new THREE.BoxGeometry(6,14)
+    var textureLoader = new THREE.TextureLoader()
+    var texturebox = textureLoader.load('./asset/tembok.jpg')
     var boxMaterial = new THREE.MeshBasicMaterial({
-        color: 0xfffff0
+        side: THREE.DoubleSide,
+        map: texturebox
     })
     boxMesh = new THREE.Mesh(boxBox,boxMaterial)
     boxMesh.position.set(x,y,z)
@@ -63,6 +68,8 @@ function render() {
     bolaMesh.position.z -= 0.1
     lantaiMesh.position.z += 0.1
     camera.position.set(0, 0, 30 + bolaMesh.position.z)
+
+    console.log(bolaMesh.position.z)
 
     praturanBagianLuar()
     praturanBagianDalam()
@@ -138,6 +145,11 @@ function praturanBagianDalam() {
         if(bolaMesh.position.x >= -5){
             return bolaMesh.position.z = -20;
         }
+    }
+
+    if(bolaMesh.position.z == -260.09999999999064){
+        alert('You Win!')
+        return bolaMesh.position.z = -20;
     }
 }
 
