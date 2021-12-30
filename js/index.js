@@ -15,6 +15,8 @@ var /** @type { THREE.Clock } */ clock = new THREE.Clock();
 
 var /** @type { boolean } */ leftKey = false;
 var /** @type { boolean } */ rightKey = false;
+var clock = new THREE.Clock();
+var delta = 0;
 
 //#endregion
 
@@ -153,71 +155,73 @@ function processInput() {
 
 function praturanBagianLuar() {
     if(bolaMesh.position.x <= -9){
-        return bolaMesh.position.z = -20;
+        return restart;
     }
     else if(bolaMesh.position.x >=9){
-        return bolaMesh.position.z = -20;
+        return restart;
     }
 }
 
 function praturanBagianDalam() {
     if(bolaMesh.position.z == -30.000000000000142){
         if(bolaMesh.position.x <= -1){
-            return bolaMesh.position.z = -20;
+            return restart;
         }
         else if(bolaMesh.position.x >= 1){
-            return bolaMesh.position.z = -20;
+            return restart;
         }
     }
 
     if(bolaMesh.position.z == -60.00000000000057){
         if(bolaMesh.position.x >= -5 && bolaMesh.position.x <= 5){
-            return bolaMesh.position.z = -20;
+            return restart;
         }
     }
 
     if(bolaMesh.position.z == -90.09999999999914){
         if(bolaMesh.position.x <= 5){
-            return bolaMesh.position.z = -20;
+            return restart;
         }
     }
 
     if(bolaMesh.position.z == -120.09999999999744){
         if(bolaMesh.position.x >= -5){
-            return bolaMesh.position.z = -20;
+            return restart;
         }
     }
 
     if(bolaMesh.position.z == -150.09999999999573){
         if(bolaMesh.position.x <= -1){
-            return bolaMesh.position.z = -20;
+            return restart;
         }
         else if(bolaMesh.position.x >= 1){
-            return bolaMesh.position.z = -20;
+            return restart;
         }
     }
 
     if(bolaMesh.position.z == -180.09999999999403){
         if(bolaMesh.position.x >= -5 && bolaMesh.position.x <= 5){
-            return bolaMesh.position.z = -20;
+            return restart;
         }
     }
 
     if(bolaMesh.position.z == -210.09999999999232){
         if(bolaMesh.position.x <= 5){
-            return bolaMesh.position.z = -20;
+            return restart;
         }
     }
 
     if(bolaMesh.position.z == -240.09999999999062){
         if(bolaMesh.position.x >= -5){
-            return bolaMesh.position.z = -20;
+            return restart;
         }
     }
 
     if(bolaMesh.position.z == -260.09999999999064){
-        alert('You Win!')
-        return bolaMesh.position.z = -20;
+        delta = Math.round(clock.getElapsedTime());
+    
+        alert('You Win in :'+delta+' s');
+        return restart;
     }
 }
 
