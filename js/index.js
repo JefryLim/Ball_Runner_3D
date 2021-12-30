@@ -1,24 +1,87 @@
 import * as THREE from '../threejs-docs/build/three.module.js'
 
-var w = window.innerWidth
-var h = window.innerHeight
-var camera, scene, renderer
+//#region Main Info
 
-var bolaMesh, lantaiMesh, boxMesh
+var /** @type { number } */ w = window.innerWidth;
+var /** @type { number } */ h = window.innerHeight;
+var /** @type { THREE.PerspectiveCamera } */ camera;
+var /** @type { THREE.Scene } */ scene;
+var /** @type { THREE.WebGLRenderer } */ renderer;
+
+var /** @type { THREE.Mesh } */ bolaMesh;
+var /** @type { THREE.Mesh } */ lantaiMesh;
+var /** @type { THREE.Mesh } */ boxMesh;
+var /** @type { THREE.Clock } */ clock = new THREE.Clock();
+
+var /** @type { boolean } */ leftKey = false;
+var /** @type { boolean } */ rightKey = false;
+
+//#endregion
+
+//#region Colors
+
+var /** @type { number } */ colorWhite = 0xFFFFFF;
+var /** @type { number } */ colorWood = 0x5a3b00;
+
+//#endregion
+
+//#region Game
+
+var /** @type { number } */ ballSpeed = 0.1;
+
+//#endregion
+
+//#region Init
 
 function main() {
-    scene = new THREE.Scene()
-    camera = new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,1000)
+    // Init Scene
+    scene = new THREE.Scene();
+
+    // Init Camera
+    camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000)
     camera.position.set(0, -6, 0)
 
+    // Init Renderer
     renderer = new THREE.WebGLRenderer({
         antialias: true
     })
+    renderer.setSize(w,h);
+    renderer.setClearColor(colorWhite);
+    document.body.appendChild(renderer.domElement);
 
-    renderer.setSize(w,h)
-    renderer.setClearColor(0xFFFFFF)
+    // Subscribe main input events
+    document.onkeydown = onKeyDownEvent;
+    document.onkeyup = onKeyUpEvent;
+}
 
-    document.body.appendChild(renderer.domElement)
+function onKeyDownEvent(/** @type { KeyboardEvent } */ ev) {
+    ev.preventDefault();
+    switch (ev.key) {
+        case "a":
+        case "ArrowLeft":
+            leftKey = true;
+            break;
+
+        case "d":
+        case "ArrowRight":
+            rightKey = true;
+            break;
+    }
+}
+
+function onKeyUpEvent(/** @type { KeyboardEvent } */ ev) {
+    ev.preventDefault();
+    switch (ev.key) {
+        case "a":
+        case "ArrowLeft":
+            leftKey = false;
+            break;
+
+        case "d":
+        case "ArrowRight":
+            rightKey = false;
+            break;
+    }
 }
 
 function bola() {
@@ -39,7 +102,7 @@ function lantai() {
     var lantaiPlane = new THREE.PlaneGeometry(18,1000)
     var lantaiMaterial = new THREE.MeshBasicMaterial({
         side: THREE.DoubleSide,
-        color: '#5a3b00'
+        color: colorWood
     })
     lantaiMesh = new THREE.Mesh(lantaiPlane,lantaiMaterial)
     lantaiMesh.position.set(0, -10, 0)
@@ -60,19 +123,32 @@ function box(x, y, z) {
     scene.add(boxMesh)
 }
 
+//#endregion
+
+//#region Update
+
 function render() {
     requestAnimationFrame(render)
     renderer.render(scene,camera)
 
-    bolaMesh.rotation.x += 0.1
-    bolaMesh.position.z -= 0.1
-    lantaiMesh.position.z += 0.1
-    camera.position.set(0, 0, 30 + bolaMesh.position.z)
+    bolaMesh.rotation.x -= Math.PI * clock.getDelta();
+    bolaMesh.position.z -= ballSpeed;
+    camera.position.set(0, 0, 30 + bolaMesh.position.z);
 
-    console.log(bolaMesh.position.z)
+    processInput();
 
     praturanBagianLuar()
     praturanBagianDalam()
+}
+
+function processInput() {
+    if ((leftKey || rightKey) && !(leftKey && rightKey)) {
+        if (leftKey) {
+            bolaMesh.position.x -= ballSpeed;
+        } else if (rightKey) {
+            bolaMesh.position.x += ballSpeed;
+        }
+    }
 }
 
 function praturanBagianLuar() {
@@ -153,21 +229,12 @@ function praturanBagianDalam() {
     }
 }
 
-let keyListener = event =>{
-    let keyCode = event.keyCode;
-    if(keyCode == 65){
-        bolaMesh.position.x -= 1
-        bolaMesh.rotation.z += 0.5
-    }
-    else if(keyCode == 68){
-        bolaMesh.position.x += 1
-        bolaMesh.rotation.z -= 0.5
-    }   
+let restart = () => {
+    bolaMesh.position.x = 0;
+    bolaMesh.position.z = -20;
 }
 
-function addListener() {
-    document.addEventListener("keydown",keyListener);
-}
+//#endregion
 
 window.onload = () =>{
     main()
@@ -187,6 +254,5 @@ window.onload = () =>{
     box(-6,-10,-210)
     box(0,-10,-240)
     box(6,-10,-240)
-    addListener()
     render()
 }
