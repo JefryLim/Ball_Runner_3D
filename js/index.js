@@ -49,6 +49,32 @@ function main() {
     })
     renderer.setSize(w,h);
     renderer.setClearColor(colorWhite);
+
+       // Sound Game
+       const listener = new THREE.AudioListener();
+       camera.add( listener );
+       const sound = new THREE.Audio( listener );
+       const audioLoader = new THREE.AudioLoader();
+       audioLoader.load( './asset/Sound.mp3', function( buffer ) {
+           sound.setBuffer( buffer );
+           sound.setLoop( true );
+           sound.setVolume( 0.5 );
+           sound.play();
+       });
+
+
+       //Skybox
+       const loader = new THREE.CubeTextureLoader();
+        const texture = loader.load([
+          '../asset/meadow_ft.jpg',
+          '../asset/meadow_bk.jpg',
+          '../asset/meadow_up.jpg',
+          '../asset/meadow_dn.jpg',
+          '../asset/meadow_rt.jpg',
+          '../asset/meadow_lf.jpg'
+        ]);
+        scene.background = texture;
+
     document.body.appendChild(renderer.domElement);
 
     // Subscribe main input events
@@ -89,7 +115,7 @@ function onKeyUpEvent(/** @type { KeyboardEvent } */ ev) {
 function bola() {
     var bolaSphereGeometry = new THREE.SphereGeometry(2, 64, 16)
     var textureLoader = new THREE.TextureLoader()
-    var texturebola = textureLoader.load('./asset/bola.jpg')
+    var texturebola = textureLoader.load('../asset/bola.jpg')
     var bolaMaterial = new THREE.MeshBasicMaterial( { 
         side: THREE.DoubleSide,
         map: texturebola
@@ -102,10 +128,13 @@ function bola() {
 
 function lantai() {
     var lantaiPlane = new THREE.PlaneGeometry(18,1000)
+    var textureLoader = new THREE.TextureLoader()
+    var texturelantai = textureLoader.load('../asset/jalan.png')
     var lantaiMaterial = new THREE.MeshBasicMaterial({
         side: THREE.DoubleSide,
-        color: colorWood
+        map: texturelantai
     })
+    texturelantai.repeat.set(1,2);
     lantaiMesh = new THREE.Mesh(lantaiPlane,lantaiMaterial)
     lantaiMesh.position.set(0, -10, 0)
     lantaiMesh.rotation.set(Math.PI/2,0,0)
@@ -115,7 +144,7 @@ function lantai() {
 function box(x, y, z) {
     var boxBox = new THREE.BoxGeometry(6,14)
     var textureLoader = new THREE.TextureLoader()
-    var texturebox = textureLoader.load('./asset/tembok.jpg')
+    var texturebox = textureLoader.load('../asset/tembok.jpg')
     var boxMaterial = new THREE.MeshBasicMaterial({
         side: THREE.DoubleSide,
         map: texturebox
@@ -155,65 +184,65 @@ function processInput() {
 
 function praturanBagianLuar() {
     if(bolaMesh.position.x <= -9){
-        return restart;
+        return bolaMesh.position.z = -20;
     }
     else if(bolaMesh.position.x >=9){
-        return restart;
+        return bolaMesh.position.z = -20;
     }
 }
 
 function praturanBagianDalam() {
     if(bolaMesh.position.z == -30.000000000000142){
         if(bolaMesh.position.x <= -1){
-            return restart;
+            return bolaMesh.position.z = -20;
         }
         else if(bolaMesh.position.x >= 1){
-            return restart;
+            return bolaMesh.position.z = -20;
         }
     }
 
     if(bolaMesh.position.z == -60.00000000000057){
         if(bolaMesh.position.x >= -5 && bolaMesh.position.x <= 5){
-            return restart;
+            return bolaMesh.position.z = -20;
         }
     }
 
     if(bolaMesh.position.z == -90.09999999999914){
         if(bolaMesh.position.x <= 5){
-            return restart;
+            return bolaMesh.position.z = -20;
         }
     }
 
     if(bolaMesh.position.z == -120.09999999999744){
         if(bolaMesh.position.x >= -5){
-            return restart;
+            return bolaMesh.position.z = -20;
         }
     }
 
     if(bolaMesh.position.z == -150.09999999999573){
         if(bolaMesh.position.x <= -1){
-            return restart;
+            return bolaMesh.position.z = -20;
         }
         else if(bolaMesh.position.x >= 1){
-            return restart;
+            return bolaMesh.position.z = -20;
         }
     }
 
     if(bolaMesh.position.z == -180.09999999999403){
         if(bolaMesh.position.x >= -5 && bolaMesh.position.x <= 5){
-            return restart;
+            return bolaMesh.position.z = -20;
         }
     }
 
     if(bolaMesh.position.z == -210.09999999999232){
         if(bolaMesh.position.x <= 5){
-            return restart;
+            return bolaMesh.position.z = -20;
         }
     }
 
     if(bolaMesh.position.z == -240.09999999999062){
         if(bolaMesh.position.x >= -5){
-            return restart;
+            return bolaMesh.position.z = -20;
         }
     }
 
@@ -221,13 +250,8 @@ function praturanBagianDalam() {
         delta = Math.round(clock.getElapsedTime());
     
         alert('You Win in :'+delta+' s');
-        return restart;
+        return bolaMesh.position.z = -20;
     }
-}
-
-let restart = () => {
-    bolaMesh.position.x = 0;
-    bolaMesh.position.z = -20;
 }
 
 //#endregion
