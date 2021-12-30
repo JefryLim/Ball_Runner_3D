@@ -162,7 +162,6 @@ function praturanBagianLuar() {
 
 function praturanBagianDalam() {
     if(bolaMesh.position.z == -30.000000000000142){
-        console.log("1");
         if(bolaMesh.position.x <= -1){
             return bolaMesh.position.z = -20;
         }
@@ -172,28 +171,24 @@ function praturanBagianDalam() {
     }
 
     if(bolaMesh.position.z == -60.00000000000057){
-        console.log("1");
         if(bolaMesh.position.x >= -5 && bolaMesh.position.x <= 5){
             return bolaMesh.position.z = -20;
         }
     }
 
     if(bolaMesh.position.z == -90.09999999999914){
-        console.log("1");
         if(bolaMesh.position.x <= 5){
             return bolaMesh.position.z = -20;
         }
     }
 
     if(bolaMesh.position.z == -120.09999999999744){
-        console.log("1");
         if(bolaMesh.position.x >= -5){
             return bolaMesh.position.z = -20;
         }
     }
 
     if(bolaMesh.position.z == -150.09999999999573){
-        console.log("1");
         if(bolaMesh.position.x <= -1){
             return bolaMesh.position.z = -20;
         }
@@ -203,21 +198,18 @@ function praturanBagianDalam() {
     }
 
     if(bolaMesh.position.z == -180.09999999999403){
-        console.log("1");
         if(bolaMesh.position.x >= -5 && bolaMesh.position.x <= 5){
             return bolaMesh.position.z = -20;
         }
     }
 
     if(bolaMesh.position.z == -210.09999999999232){
-        console.log("1");
         if(bolaMesh.position.x <= 5){
             return bolaMesh.position.z = -20;
         }
     }
 
     if(bolaMesh.position.z == -240.09999999999062){
-        console.log("1");
         if(bolaMesh.position.x >= -5){
             return bolaMesh.position.z = -20;
         }
